@@ -1,0 +1,86 @@
+============================================================
+PV LIGHTNING AND SURGE PROTECTION - FINAL MATLAB PROJECT
+Run ID: 20260807_114129
+============================================================
+[01/18] Cleaning generated outputs ................. PASS
+[02/18] Checking MATLAB environment                  RUNNING
+[02/18] Checking MATLAB environment                  PASS
+[03/18] Loading and validating parameters            RUNNING
+[03/18] Loading and validating parameters            PASS
+[04/18] Building canonical Simulink model            RUNNING
+[04/18] Building canonical Simulink model            PASS
+[05/18] Running architecture preflight               RUNNING
+[05/18] Running architecture preflight               PASS
+[06/18] Validating PV model                          RUNNING
+[06/18] Validating PV model                          PASS (5/5)
+[07/18] Validating MPPT                              RUNNING
+[07/18] Validating MPPT                              PASS (18/18 unit checks)
+[08/18] Validating SPD/MOV                           RUNNING
+[08/18] Validating SPD/MOV                           PASS (shared characteristic and margins)
+[09/18] Validating supercapacitor interface          RUNNING
+[09/18] Validating supercapacitor interface          PASS
+[10/18] Validating protection controller             RUNNING
+[10/18] Validating protection controller             PASS (qualified arming configured)
+[11/18] Running final scenarios                      RUNNING
+    T01  Normal Operation                 RUNNING
+    T01  Normal Operation                 EXECUTED
+    T02  Irradiance Step                  RUNNING
+    T02  Irradiance Step                  EXECUTED
+    T03  Short Ripple                     RUNNING
+    T03  Short Ripple                     EXECUTED
+    T04  Moderate Design Transient        RUNNING
+    T04  Moderate Design Transient        EXECUTED
+    T05  Severe Design Transient          RUNNING
+    T05  Severe Design Transient          EXECUTED
+    T06  Repeated Design Surges           RUNNING
+    T06  Repeated Design Surges           EXECUTED
+    T07  Sustained Overvoltage            RUNNING
+    T07  Sustained Overvoltage            EXECUTED
+    T08  Emergency Overvoltage            RUNNING
+    T08  Emergency Overvoltage            EXECUTED
+    T09  Automatic Recovery               RUNNING
+    T09  Automatic Recovery               EXECUTED
+    T10  Manual Reset                     RUNNING
+    T10  Manual Reset                     EXECUTED
+    T11  Protection Comparison            RUNNING
+    T11  Protection Comparison            EXECUTED
+    T12  SC Current Limit                 RUNNING
+    T12  SC Current Limit                 EXECUTED
+    T13  Sensor Noise                     RUNNING
+    T13  Sensor Noise                     EXECUTED
+    T14  Inverter Integration             RUNNING
+    T14  Inverter Integration             EXECUTED
+    T15  Solver Convergence               RUNNING
+    T15  Solver Convergence               EXECUTED
+    T16  Intentional SPD Overstress       RUNNING
+    T16  Intentional SPD Overstress       EXECUTED
+[11/18] Running final scenarios                      EXECUTED (16)
+[12/18] Running fair paired comparisons              RUNNING
+[12/18] Running fair paired comparisons              PASS (16 paired runs)
+[13/18] Running inverter tests                       RUNNING
+[13/18] Running inverter tests                       PASS (23.894 V RMS, 50.000 Hz)
+[14/18] Running fast SPD tests                       RUNNING
+[14/18] Running fast SPD tests                       PASS (shared MOV, 2 step sizes)
+[15/18] Running solver convergence                   RUNNING
+[15/18] Running solver convergence                   PASS (max 0.429%)
+[16/18] Generating final evaluation package          RUNNING
+[16/18] Generating final evaluation package          PASS (31 figures, 17 tables)
+[17/18] Generating final reports                     RUNNING
+[17/18] Generating final reports                     PASS
+[18/18] Verifying deliverables and repeatability     RUNNING
+[18/18] Verifying deliverables and repeatability     PASS
+
+Final result:
+  Unit tests passed: 18/18
+  Scenario tests passed: 16/16
+  Individual assertions passed: 351/351
+  Expected overstress detections: 1
+  Unexpected SPD current violations: 0
+  Unexpected SPD energy violations: 0
+  Unexpected SC current violations: 0
+  Unexpected SC voltage violations: 0
+  Noncritical warnings: 9
+  Critical failures: 0
+  Output: C:\Users\Mahin\Downloads\PV-Lightning-Protection-main\PV-Lightning-Protection-main\results
+
+PROJECT EXECUTION COMPLETED SUCCESSFULLY

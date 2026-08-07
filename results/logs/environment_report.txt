@@ -1,0 +1,16 @@
+Final project environment
+Generated: 07-Aug-2026 11:41:29
+MATLAB: 9.14.0.2891782 (R2023a) Update 8
+OS: Microsoft Windows 11 Pro
+Project: C:\Users\Mahin\Downloads\PV-Lightning-Protection-main\PV-Lightning-Protection-main
+Installed:
+-----------------------------------------------------------------------------------------------------
+MATLAB Version: 9.14.0.2891782 (R2023a) Update 8
+MATLAB License Number: 40587447
+Operating System: Microsoft Windows 11 Pro Version 10.0 (Build 26200)
+Java Version: Java 1.8.0_202-b08 with Oracle Corporation Java HotSpot(TM) 64-Bit Server VM mixed mode
+-----------------------------------------------------------------------------------------------------
+MATLAB                                                Version 9.14        (R2023a)
+Simulink                                              Version 10.7        (R2023a)
+
+MATLAB=1 Simulink=1 Simscape=0 Simscape Electrical=0
