@@ -1,0 +1,24 @@
+metric,value,unit
+PV voltage before surge,37.1255945072218,V
+PV current before surge,5.28359828460482,A
+PV power delivered to MPPT/boost,196.156727453291,W
+Protected DC bus before surge,49.4429378307842,V
+Configured lightning-current peak,10000,A
+Measured injected-current peak,9999.99999950367,A
+Injection-node voltage peak,496.328685268227,V
+SPD1 conduction threshold,62,V
+SPD1 diverted-current peak,9948.03844325765,A
+Residual-current peak after SPD1,51.9615562460269,A
+SPD1 terminal-voltage peak,371.328685268983,V
+SPD2 conduction threshold,55,V
+SPD2 diverted-current peak,29.7820233206538,A
+Residual-current peak after SPD2,39.8435205892828,A
+SPD2 terminal-voltage peak,55.9385036158063,V
+Protected DC-bus peak,49.6546548310228,V
+Emergency trip threshold,69.6,V
+Supercapacitor current peak,16.3636363636358,A
+Supercapacitor current limit,18,A
+AC output voltage RMS before surge,24.723989858497,V RMS
+AC output current RMS before surge,7.64039964377164,A RMS
+Minimum relay command,1,logic
+Minimum physical relay state,1,logic

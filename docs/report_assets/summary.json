@@ -1,0 +1,11 @@
+{
+  "eventTime_s": 0.6,
+  "frontTime_us": 8,
+  "halfValueTime_us": 20,
+  "spd1DiversionPercent": 99.480384437513962,
+  "afterSpd1Percent": 0.51961556248605945,
+  "afterSpd2Percent": 76.678843875715017,
+  "busMargin_V": 19.945345168977198,
+  "relayRemainedClosed": true,
+  "defaultInjectionMode": "10 kA current injection"
+}

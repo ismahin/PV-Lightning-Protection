@@ -1,61 +1,65 @@
 # Simscape Electrical component model
 
-`model/PV_Lightning_Protection_Simscape.slx` is the physical-component companion to the verified code-oriented model.
+`model/PV_Lightning_Protection_Simscape.slx` is the physical-component companion to the verified code-oriented model. It combines the previous PV, MPPT, boost, supercapacitor, relay and inverter implementation with the configurable indirect-lightning requirements.
 
-The electrical plant uses Simscape and Simscape Electrical library components:
+The electrical plant uses Simscape and Simscape Electrical Solar Cell, R/L/C, Controlled Current Source, Varistor, Supercapacitor, Switch, sensor, electrical-reference and solver components. Code is retained only for MPPT, averaged converter state equations, supervisory protection, relay timing and supercapacitor control.
 
-- Solar Cell PV source;
-- averaged boost DC-DC converter;
-- physical cable/source resistors and inductors;
-- controlled lightning voltage source;
-- DC-link capacitor;
-- library Varistor with project clamp, leakage, and dynamic-resistance values, plus lead and earth impedance;
-- Supercapacitor and controlled bidirectional current interface;
-- physical protected-load contactor;
-- physical protected DC inverter-equivalent load and an isolated controlled AC output source with resistor load;
-- physical voltage/current sensors, electrical reference, and solver configuration.
+## User-editable settings
 
-The MPPT, magnitude-duration protection state machine, relay operating delay, and supercapacitor current command retain the existing MATLAB S-functions. These are control algorithms rather than electrical components.
+No code editing or rebuilding is required for a normal parameter change:
+
+1. Open `model/PV_Lightning_Protection_Simscape.slx`.
+2. Double-click the **USER SETTINGS - DOUBLE CLICK** block.
+3. Change values under the **Lightning**, **SPD1**, **SPD2**, **Supercapacitor**, or **Relay** tab.
+4. Press **Apply** or **OK**, then press **Run**.
+
+The block contains 48 settings, including current/voltage injection selection, peak current and voltage, 8/20 us timing, source and cable impedance, both SPD models and ratings, supercapacitor values, voltage thresholds, and relay timing. In voltage mode, the physical current source and shunt resistor form the Norton equivalent of the requested voltage source and source resistance.
+
+`config/simscape_user_settings.m` supplies only the defaults used when the model is regenerated. `simulation/apply_simscape_settings_mask.m` is the block's internal callback; users do not need to edit or run either file.
 
 ## Build and run
 
-From the project root in MATLAB:
+From the project root:
 
 ```matlab
 startup_project
 build_simscape_component_model
 open_system('model/PV_Lightning_Protection_Simscape.slx')
-sim('PV_Lightning_Protection_Simscape')
 ```
 
-The default scenario is `T05` (severe design transient), selected so both MOV stages and the isolation response are visible. Press **Run** once and wait for the simulation to finish (about 50 seconds on the development machine). The Scopes stay closed during the run. After completion, double-click them in this order:
+Then use the settings block and the Simulink **Run** button. The selected values are stored in the `.slx` file when the model is saved.
 
-1. `01 - PV Array and MPPT`: PV voltage, current, power, and MPPT duty cycle.
-2. `02 - SPD1 Direct Lightning`: applied lightning voltage, SPD1 terminal voltage, incoming surge current, and SPD1 discharge current.
-3. `03 - SPD2 Indirect Lightning`: voltage arriving from SPD1, protected-bus residual voltage, SPD2 discharge current, and SPD1 discharge current for coordination comparison.
-4. `04 - Supercapacitor Buffer`: protected-bus voltage, supercapacitor voltage, current, and power.
-5. `05 - Automated Disconnection`: monitored voltage, controller state, relay command, and physical relay state.
-6. `06 - Inverter and Load`: inverter DC input voltage, inverter connection state, AC load voltage, and AC load current.
+The default is a 10 kA line-to-ground current injection. The normalized pulse reaches 100% at 8 us and 50% at 20 us. The physical DC network uses a 4 us local solver step; the commanded waveform is retained at 0.25 us resolution for accurate display and timing checks.
 
-Each Scope uses four vertically separated axes, automatic scaling, grid lines, and signal legends. They do not open automatically, so the full simulation can complete before you inspect them one by one.
+After the run, open the Scopes in order:
 
-The corresponding workspace logs include `Simscape_spd1_voltage`, `Simscape_spd_current`, `Simscape_spd2_current`, `Simscape_bus_voltage`, `Simscape_sc_voltage`, `Simscape_sc_current`, `Simscape_ac_voltage`, `Simscape_ac_current`, `Simscape_relay_command`, `Simscape_controller_state`, and `Simscape_relay_state`.
+1. `01 - PV Array and MPPT`: PV voltage, current, power and MPPT duty cycle.
+2. `02 - Indirect Lightning Injection`: configured current/voltage and measured injection current/voltage.
+3. `03 - SPD1 Diversion and Output`: injected, diverted and residual currents plus SPD1 voltage.
+4. `04 - SPD2 Diversion and Output`: SPD2 diverted current, physical residual current, protected bus and SPD2 voltage.
+5. `05 - Supercapacitor Buffer`: voltage, current, power and cumulative absorbed energy.
+6. `06 - Relay Thresholds and Timing`: bus voltage, warning/emergency/recovery thresholds, command and physical contact state.
+7. `07 - Input versus Protected Output`: injection, SPD1, SPD2 and protected-output voltages.
+8. `08 - Inverter and Load`: protected bus, contact state, AC voltage and AC current.
 
-To use another project scenario, generate `scenario_input` with `configure_scenario`, assign it to the model workspace, and set the model stop time to that scenario's `StopTime`.
+All Scopes stay closed during simulation and use separate axes with legends and automatic scaling.
 
-## Comparison with the coded model
+## Physical interpretation
 
-Run `verify_simscape_against_coded` to execute both T05 models and compare the source, protected bus, aggregate two-stage SPD discharge current, supercapacitor, load, and relay timing. The calibration tolerances are 3-10% for electrical values, 5 ms for trip/opening, and 30 ms for reconnection. These tolerances account for the physical component parasitics and the much smaller Simscape local-solver step.
+SPD1 is mounted at the cable entry and diverts most of the injected current. The residual passes through cable impedance to the SPD2 node. SPD2 has a lower protective level and a small coordination impedance separates its node from the existing 20 mF protected DC link. This lets the second diversion stage be measured without changing the normal DC-link capacitance.
 
-The calibrated development run produced these principal results:
+The MOVs and DC-link capacitor handle the microsecond surge. The 15 F supercapacitor and its 18 A converter handle the slower post-surge bus-energy disturbance; they are not represented as a device capable of directly absorbing 10 kA. Its usable energy is evaluated from `0.5*C*(Vmax^2-Vmin^2)`.
 
-| Quantity | Coded model | Simscape model | Difference |
-|---|---:|---:|---:|
-| PV power before event | 202.33 W | 195.98 W | -3.14% |
-| Peak protected DC bus | 69.83 V | 70.65 V | +1.17% |
-| Peak aggregate SPD current | 344.87 A | 338.60 A | -1.82% |
-| Peak supercapacitor voltage | 30.983 V | 30.901 V | -0.27% |
-| Peak supercapacitor current | 16.364 A | 16.364 A | <0.01% |
-| Load power before event | 178.00 W | 188.75 W | +6.04% |
+The relay cannot mechanically open within an 8/20 us pulse. Its Scope therefore shows whether the protected bus crosses the editable thresholds and shows the configured 8 ms opening, 350 ms safe dwell and 12 ms closing behavior for disturbances that require isolation.
 
-The MPPT, boost state equations, protection state machine, relay timing, and supercapacitor command remain the project algorithms. Their electrical interfaces use controlled Simscape sources so the physical Solar Cell, capacitor, MOV, supercapacitor, contactor, sensors, grounding impedances, and loads remain actual library components.
+## Verification
+
+Run:
+
+```matlab
+verify_indirect_lightning_simscape
+verify_simscape_against_coded
+verify_simscape_settings_panel
+```
+
+The first check verifies the 10 kA peak, 8/20 us timing, SPD1 diversion, SPD2 operation, residual reduction, protected-bus limit and supercapacitor current. The second verifies that PV, bus, supercapacitor and load behavior before the new event remain aligned with the coded model. The third changes the actual settings-mask values, executes current and voltage injection cases, checks that the measured physical outputs change, enforces a changed supercapacitor current limit, and restores the saved defaults automatically. The fast surge test is standards-inspired numerical evidence, not a certification test or a claim about a commercial SPD.
