@@ -1,3 +1,9 @@
 # Simulink-generated cache files
 *.slxc
 slprj/
+
+# Temporary browser/report-rendering profiles can contain cookies and logins.
+results/temp/edge_profile/
+
+# Microsoft Word owner/lock files.
+~$*.docx

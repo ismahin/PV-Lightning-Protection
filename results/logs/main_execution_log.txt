@@ -1,6 +1,6 @@
 ============================================================
 PV LIGHTNING AND SURGE PROTECTION - FINAL MATLAB PROJECT
-Run ID: 20260807_114129
+Run ID: 20260816_203117
 ============================================================
 [01/18] Cleaning generated outputs ................. PASS
 [02/18] Checking MATLAB environment                  RUNNING
@@ -66,21 +66,8 @@ Run ID: 20260807_114129
 [16/18] Generating final evaluation package          RUNNING
 [16/18] Generating final evaluation package          PASS (31 figures, 17 tables)
 [17/18] Generating final reports                     RUNNING
-[17/18] Generating final reports                     PASS
-[18/18] Verifying deliverables and repeatability     RUNNING
-[18/18] Verifying deliverables and repeatability     PASS
 
-Final result:
-  Unit tests passed: 18/18
-  Scenario tests passed: 16/16
-  Individual assertions passed: 351/351
-  Expected overstress detections: 1
-  Unexpected SPD current violations: 0
-  Unexpected SPD energy violations: 0
-  Unexpected SC current violations: 0
-  Unexpected SC voltage violations: 0
-  Noncritical warnings: 9
-  Critical failures: 0
-  Output: C:\Users\Mahin\Downloads\PV-Lightning-Protection-main\PV-Lightning-Protection-main\results
-
-PROJECT EXECUTION COMPLETED SUCCESSFULLY
+CRITICAL FAILURE during stage: reports
+PDF conversion failed:
+  at generate_report line 40
+  at main line 37
