@@ -4,6 +4,19 @@
 
 The electrical plant uses Simscape and Simscape Electrical Solar Cell, R/L/C, Controlled Current Source, Varistor, Supercapacitor, Switch, sensor, electrical-reference and solver components. Code is retained only for MPPT, averaged converter state equations, supervisory protection, relay timing and supercapacitor control.
 
+## Simplified model workflow
+
+The professor-facing top level contains 16 functional blocks instead of the original 143 individual blocks. Eight of these are the physical electrical stages requested for step-by-step explanation. The seven labeled Simulink inputs are the real command paths; repetitive sensor feedback is carried by named internal signal routes so it does not cover the diagram.
+
+1. **01 INPUTS - PV MPPT & BOOST CONTROL** prepares the scenario, MPPT duty cycle, and averaged boost commands.
+2. **02 LIGHTNING COMMAND** prepares the selected current- or voltage-injection waveform.
+3. The physical plant is divided into eight individually labeled subsystems: **03A PV ARRAY**, **03B SURGE SOURCE & CABLE**, **03C SPD1 PRIMARY PROTECTION**, **03D SPD2 COORDINATED PROTECTION**, **03E PROTECTED DC BUS**, **03F SUPERCAPACITOR BANK**, **03G RELAY & DC LOAD**, and **03H INVERTER & AC LOAD**. Together they contain all 76 Simscape/Simscape Electrical library blocks and expose the physical workflow directly on the top level.
+4. **05 SUPERCAP CONTROL**, **06 RELAY PROTECTION CONTROL**, and **07 INVERTER CONTROL** contain the retained supervisory algorithms.
+5. **DERIVED METRICS** calculates power, absorbed energy, residual power, and voltage reduction.
+6. **08 RESULTS - SCOPES & LOGGING** contains the eight ordered Scope blocks and all verification loggers.
+
+No physical component, governing equation, parameter, logger, or Scope signal was removed. The seven command inputs are labeled with their physical meaning and units. Sparse controller vectors use Selector blocks so unused Demux outputs are not displayed, and dangling visual branches are removed. The hierarchy and named signal routing are presentation-only changes. `model/simplify_simscape_presentation.m` and `model/split_simscape_electrical_stages.m` reproduce this organization whenever the model is rebuilt.
+
 ## User-editable settings
 
 No code editing or rebuilding is required for a normal parameter change:
@@ -31,7 +44,7 @@ Then use the settings block and the Simulink **Run** button. The selected values
 
 The default is a 10 kA line-to-ground current injection. The normalized pulse reaches 100% at 8 us and 50% at 20 us. The physical DC network uses a 4 us local solver step; the commanded waveform is retained at 0.25 us resolution for accurate display and timing checks.
 
-After the run, open the Scopes in order:
+After the run, double-click **08 RESULTS - SCOPES & LOGGING**, then open the Scopes in order:
 
 1. `01 - PV Array and MPPT`: PV voltage, current, power and MPPT duty cycle.
 2. `02 - Indirect Lightning Injection`: configured current/voltage and measured injection current/voltage.

@@ -563,6 +563,9 @@ note = Simulink.Annotation(name,sprintf([ ...
     'Algorithms retained as code: MPPT, protection state machine, relay timing, SC command']));
 note.Position = [20 700 320 810];
 
+% Collapse repeated monitor branches and pure control sections while keeping
+% the complete Simscape electrical network and all numerical behavior intact.
+simplify_simscape_presentation(name);
 set_param(name,'ZoomFactor','FitSystem');
 save_system(name,modelPath);
 close_system(name,0);
